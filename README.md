@@ -52,7 +52,7 @@ public function __getWsdlUrl()
 public function __setHeader($name,$content,$type=XSD_ANYXML)
 ```
 
-##Use
+##Using
 ```php
 //constructor
 $client = new BubbleSOAP('http://example.com/service.asmx?wsdl');
