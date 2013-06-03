@@ -65,8 +65,3 @@ echo $client->__getLastRequest();
 //trace response
 echo $client->__getLastResponse();
 ```
-
-##Changelog
-
-**1.0.0** (2013-06-03)
-* First version

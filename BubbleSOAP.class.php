@@ -8,7 +8,7 @@ if(!extension_loaded('soap')){
  * @author andreaval <andrea.vallorani@gmail.com>
  * @license MIT License <http://opensource.org/licenses/MIT>
  * @link GitHub Repository: https://github.com/andreaval/Bubble-SOAP
- * @version 1.0.0
+ * @version 1.0.1
  */
 class BubbleSOAP extends SoapClient{
     
@@ -229,7 +229,7 @@ class BubbleSOAP extends SoapClient{
                     $values = array();
                     if (count((array)$members) == 0) {
                         $this->__loadWSDL();
-                        $values = $this->checkForEnum($this->__wsdl_dom, $class);
+                        $values = $this->__checkForEnum($this->__wsdl_dom, $class);
                         if($values){
                             //$list[$class] = array($class=>$values);
                             $list[$class] = 'string';
@@ -256,10 +256,10 @@ class BubbleSOAP extends SoapClient{
      * @param string $class
      * @return array
      */
-    protected function checkForEnum(&$dom, $class) {
+    protected function __checkForEnum(&$dom, $class) {
         $values = array();
 
-        $node = $this->findType($dom, $class);
+        $node = $this->__findType($dom, $class);
         if (!$node) {
             return $values;
         }
@@ -282,7 +282,7 @@ class BubbleSOAP extends SoapClient{
      * @param string $class
      * @return DOMNode
      */
-    protected function findType(&$dom, $class) {
+    protected function __findType(&$dom, $class) {
         $types_node = $dom->getElementsByTagName('types')->item(0);
         $schema_list = $types_node->getElementsByTagName('schema');
 
