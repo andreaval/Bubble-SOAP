@@ -52,6 +52,10 @@ public function __getWsdlUrl()
 public function __setHeader($name,$content,$type=XSD_ANYXML)
 ```
 
+##Requirements
+* PHP >= 5.0
+* PHP compiled with SOAP support
+
 ##Using
 ```php
 //constructor
