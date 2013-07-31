@@ -8,7 +8,7 @@ if(!extension_loaded('soap')){
  * @author andreaval <andrea.vallorani@gmail.com>
  * @license MIT License <http://opensource.org/licenses/MIT>
  * @link GitHub Repository: https://github.com/andreaval/Bubble-SOAP
- * @version 1.0.1
+ * @version 1.0.2
  */
 class BubbleSOAP extends SoapClient{
     
@@ -144,13 +144,9 @@ class BubbleSOAP extends SoapClient{
     
     protected function __loadWSDL(){
         if(!isset($this->__wsdl_dom)){
-            try{
-                $this->__wsdl_dom = new DOMDocument();
-                $this->__wsdl_dom->load($this->__wsdl_url);
-            } 
-            catch(Exception $e){
-                throw new Exception('Error loading WSDL document: '.$e->getMessage());
-            }
+            if(!ini_get('allow_url_fopen')) throw new Exception('BubbleSOAP: WSDL document not loaded because "allow_url_fopen" is set to off!');
+            $this->__wsdl_dom = DOMDocument::load($this->__wsdl_url);
+            if(!$this->__wsdl_dom) throw new Exception('BubbleSOAP: WSDL document not loaded, unknown problem!');
         }
     }
     
