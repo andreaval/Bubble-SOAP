@@ -1,6 +1,6 @@
 <?php
 if(!extension_loaded('soap')){
-    throw new Exception("BubbleSOAP: SOAP extension not enabled!");
+    throw new Exception('BubbleSOAP: SOAP extension not enabled!');
 }
 /**
  * BubbleSOAP Class
@@ -8,7 +8,7 @@ if(!extension_loaded('soap')){
  * @author andreaval <andrea.vallorani@gmail.com>
  * @license MIT License <http://opensource.org/licenses/MIT>
  * @link GitHub Repository: https://github.com/andreaval/Bubble-SOAP
- * @version 1.0.2
+ * @version 1.0.3
  */
 class BubbleSOAP extends SoapClient{
     
@@ -69,10 +69,7 @@ class BubbleSOAP extends SoapClient{
      */
     public function __getFunctionsNames(){
         $this->__parseWSDL('operations');
-        foreach($this->__wsdl_parsed['operations'] as $k=>$v){
-            $list[]=$k;
-        }
-        return $list;
+        return array_keys($this->__wsdl_parsed['operations']);
     }
     
     /**
@@ -126,16 +123,16 @@ class BubbleSOAP extends SoapClient{
         if(!isset($this->__wsdl_parsed['types'][$name])) return $name;
         $type = $this->__wsdl_parsed['types'][$name];
         if(is_object($type)){
-            $list=new stdClass();
+            $list = new stdClass();
             foreach((array)$type as $k=>$v){
-                $list->$k=$this->__parseType($v);
+                $list->$k = $this->__parseType($v);
             }
             return $list;
         }
         elseif(is_array($type)){
-            $list=array();
+            $list = array();
             foreach($type as $k=>$v){
-                $list[$k]=$this->__parseType($v);
+                $list[$k] = $this->__parseType($v);
             }
             return $list;
         }
@@ -145,8 +142,10 @@ class BubbleSOAP extends SoapClient{
     protected function __loadWSDL(){
         if(!isset($this->__wsdl_dom)){
             if(!ini_get('allow_url_fopen')) throw new Exception('BubbleSOAP: WSDL document not loaded because "allow_url_fopen" is set to off!');
-            $this->__wsdl_dom = DOMDocument::load($this->__wsdl_url);
-            if(!$this->__wsdl_dom) throw new Exception('BubbleSOAP: WSDL document not loaded, unknown problem!');
+            $this->__wsdl_dom = new DOMDocument;
+            $this->__wsdl_dom->preserveWhiteSpace = false;
+            $this->__wsdl_dom->load($this->__wsdl_url);
+            if(!$this->__wsdl_dom->xmlVersion) throw new Exception('BubbleSOAP: WSDL document not loaded, unknown problem!');
         }
     }
     
@@ -171,7 +170,7 @@ class BubbleSOAP extends SoapClient{
                     $paramList = array();
                     $params = explode(',',$params);
                     foreach($params as $param){
-                        list($paramType,$paramName)=explode(' ',trim($param));
+                        list($paramType,$paramName) = explode(' ',trim($param));
                         $paramName = trim($paramName,'$)');
                         $paramList[$paramName] = $paramType;
                     }
@@ -185,7 +184,7 @@ class BubbleSOAP extends SoapClient{
                 $list = array();
                 foreach($types as $type){
                     $parts = explode("\n", $type);
-                    $prefix = explode(" ", $parts[0]);
+                    $prefix = explode(' ', $parts[0]);
                     $class = $prefix[1];
                     // array
                     if(substr($class,-2) == '[]'){
@@ -206,16 +205,16 @@ class BubbleSOAP extends SoapClient{
 
                         if(preg_match('/^$\w[\w\d_]*$/', $member)) {
                             throw new Exception('illegal syntax for member variable: ' . $member);
-                            continue;
                         }
 
                         if(strpos($member, ':')) { // keep the last part
-                            list($tmp, $member) = explode(':', $member);
+                            $tmp = explode(':', $member, 2);
+                            $member = (isset($tmp[1])) ? $tmp[1] : null;
                         }
 
                         $add = true;
                         foreach($members as $mem) {
-                            if($mem['member'] == $member){
+                            if(isset($mem['member']) && $mem['member'] == $member){
                                 $add = false;
                             }
                         }
@@ -297,4 +296,3 @@ class BubbleSOAP extends SoapClient{
         return null;
     }
 }
-?>
