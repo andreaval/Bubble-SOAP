@@ -4,11 +4,11 @@ if(!extension_loaded('soap')){
 }
 /**
  * BubbleSOAP Class
- *
+ * Extends the SoapClient class adding new methods
  * @author andreaval <andrea.vallorani@gmail.com>
  * @license MIT License <http://opensource.org/licenses/MIT>
  * @link GitHub Repository: https://github.com/andreaval/Bubble-SOAP
- * @version 1.0.3
+ * @version 1.0.4
  */
 class BubbleSOAP extends SoapClient{
     
@@ -75,7 +75,7 @@ class BubbleSOAP extends SoapClient{
     /**
      * Gets the parameters of the specified function
      * @param string $method Function name
-     * @return array Array of function paramaters
+     * @return array Array of function parameters
      */
     public function __getParams($method){
         $this->__parseWSDL('operations');
@@ -89,7 +89,7 @@ class BubbleSOAP extends SoapClient{
     /**
      * Gets the return type of the specified function
      * @param string $method Function name
-     * @return array Array of function paramaters
+     * @return array Array of function parameters
      */
     public function __getReturn($method){
         $this->__parseWSDL('operations');
@@ -202,16 +202,13 @@ class BubbleSOAP extends SoapClient{
                     for($i = 1; $i < count($parts) - 1; $i++) {
                         $parts[$i] = trim($parts[$i]);
                         list($type, $member) = explode(' ',substr($parts[$i],0,-1));
-
                         if(preg_match('/^$\w[\w\d_]*$/', $member)) {
                             throw new Exception('illegal syntax for member variable: ' . $member);
                         }
-
                         if(strpos($member, ':')) { // keep the last part
                             $tmp = explode(':', $member, 2);
                             $member = (isset($tmp[1])) ? $tmp[1] : null;
                         }
-
                         $add = true;
                         foreach($members as $mem) {
                             if(isset($mem['member']) && $mem['member'] == $member){
@@ -246,24 +243,20 @@ class BubbleSOAP extends SoapClient{
     
     /**
      * Look for enumeration
-     * 
      * @param DOM $dom
      * @param string $class
      * @return array
      */
     protected function __checkForEnum(&$dom, $class) {
         $values = array();
-
         $node = $this->__findType($dom, $class);
         if (!$node) {
             return $values;
         }
-
         $value_list = $node->getElementsByTagName('enumeration');
         if ($value_list->length == 0) {
             return $values;
         }
-
         for ($i = 0; $i < $value_list->length; $i++) {
             $values[] = $value_list->item($i)->attributes->getNamedItem('value')->nodeValue;
         }
@@ -272,7 +265,6 @@ class BubbleSOAP extends SoapClient{
 
     /**
      * Look for a type
-     * 
      * @param DOM $dom
      * @param string $class
      * @return DOMNode
@@ -280,7 +272,6 @@ class BubbleSOAP extends SoapClient{
     protected function __findType(&$dom, $class) {
         $types_node = $dom->getElementsByTagName('types')->item(0);
         $schema_list = $types_node->getElementsByTagName('schema');
-
         for ($i = 0; $i < $schema_list->length; $i++) {
             $children = $schema_list->item($i)->childNodes;
             for ($j = 0; $j < $children->length; $j++) {
