@@ -8,7 +8,7 @@ if(!extension_loaded('soap')){
  * @author andreaval <andrea.vallorani@gmail.com>
  * @license MIT License <http://opensource.org/licenses/MIT>
  * @link GitHub Repository: https://github.com/andreaval/Bubble-SOAP
- * @version 1.0.4
+ * @version 1.0.5
  */
 class BubbleSOAP extends SoapClient{
     
