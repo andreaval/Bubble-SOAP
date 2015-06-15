@@ -1,7 +1,7 @@
 {
-    "name": "andreaval/Bubble-SOAP",
-    "type": "application",
+    "name": "andreaval/BubbleSOAP",
     "description": "PHP Soap Client. Extends the SoapClient class adding new methods",
+    "type": "library",
     "keywords": ["php", "soap", "wsdl"],
     "homepage": "https://github.com/andreaval/Bubble-SOAP",
     "license": "MIT",
@@ -16,6 +16,7 @@
         "source": "https://github.com/andreaval/Bubble-SOAP"
     },
     "require": {
-        "php": ">=5.0.1"
+        "php": ">=5.0.1",
+        "ext-soap": "*"
     }
 }
