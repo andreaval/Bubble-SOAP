@@ -18,5 +18,10 @@
     "require": {
         "php": ">=5.0.1",
         "ext-soap": "*"
+    },
+    "autoload": {
+        "classmap": [
+            "BubbleSOAP.class.php"
+        ]
     }
 }
