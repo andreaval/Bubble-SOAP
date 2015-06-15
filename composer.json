@@ -1,5 +1,5 @@
 {
-    "name": "andreaval/BubbleSOAP",
+    "name": "andreaval/bubble-soap",
     "description": "PHP Soap Client. Extends the SoapClient class adding new methods",
     "type": "library",
     "keywords": ["php", "soap", "wsdl"],
