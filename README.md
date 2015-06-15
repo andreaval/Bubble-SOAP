@@ -19,14 +19,14 @@ public function __getFunctionsNames()
 /**
  * Gets the parameters of the specified function
  * @param string $method Function name
- * @return array Array of function paramaters
+ * @return array Array of function parameters
  */
 public function __getParams($method)
 
 /**
  * Gets the return type of the specified function
  * @param string $method Function name
- * @return array Array of function paramaters
+ * @return array Array of function parameters
  */
 public function __getReturn($method)
 
@@ -53,7 +53,7 @@ public function __setHeader($name,$content,$type=XSD_ANYXML)
 ```
 
 ##Requirements
-* PHP >= 5.0
+* PHP >= 5.0.1
 * PHP compiled with SOAP support
 
 ##Using
@@ -62,10 +62,11 @@ public function __setHeader($name,$content,$type=XSD_ANYXML)
 $client = new BubbleSOAP('http://example.com/service.asmx?wsdl');
 //enabled trace
 $client->__enableTrace();
-//invoke service
-$client->myMethodName();
-//trace request
-echo $client->__getLastRequest();
-//trace response
-echo $client->__getLastResponse();
+//print params
+$params = $client->__getParams('methodName');
+foreach($params as $param){
+    echo $param.' - type:'.$client->__getType($param).'<br>';
+}
+//print return
+echo $client->__getReturn('methodName');
 ```
